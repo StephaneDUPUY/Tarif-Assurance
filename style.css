@@ -35,6 +35,10 @@ button {
     padding: 0.625rem;
 }
 
+.grey {
+    color: grey;
+}
+
 .red {
     color: red;
 }

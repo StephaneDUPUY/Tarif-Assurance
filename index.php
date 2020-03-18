@@ -43,19 +43,18 @@
 		$level = min(4, $level);
 
 		// labels for level
-		$labelLevel = [
-			"Refus d'assurer",
-			"Rouge",
-			"Orange",
-			"Vert",
-			"Bleu"
+		$colorLevel = [
+			["color" => "Refus d'assurer", "class" => "grey"],
+			["color" => "Rouge", "class" => "red"],
+			["color" => "Orange", "class" => "orange"],
+			["color" => "Vert", "class" => "green"],
+			["color" => "Bleu", "class" => "blue"]
 		];
 
-		// et je choisis le bon
-		$theLevel = $labelLevel[$level];
+		// find the good one
+        $theLevel = $colorLevel[$level]['color'];
+        $class = $colorLevel[$level]['class'];
 
-		echo $theLevel;
-		exit;
 	}
 ?>
 <!DOCTYPE html>
@@ -79,22 +78,26 @@
                     <h1>Assurance</h1>
                     <h2>Calcul du tarif de votre client</h2>
 
+                    <?php if (isset($theLevel)): ?>
+                        <p>Vous avez droit au tarif <span class="<?=$class?>"><?=$theLevel?></span></p>
+                    <?php endif; ?>
+
                     <form action="index.php" method="post">
                         <div class="label">Âge</div>
-                        <div class="input"><input type="number" name="age" min="16" value="" placeholder="" required></div>
+                        <div class="input"><input type="number" name="age" min="16" placeholder="" required></div>
                         <div class="label">Années de permis</div>
-                        <div class="input"><input type="number" name="permis" min="0" value="" placeholder="" required></div>
+                        <div class="input"><input type="number" name="permis" min="0" placeholder="" required></div>
                         <div class="label">Nombre d'accidents responsables</div>
-                        <div class="input"><input type="number" name="accidents" min="0" value="" placeholder="" required></div>
+                        <div class="input"><input type="number" name="accidents" min="0" placeholder="" required></div>
                         <div class="label">Années chez son assureur</div>
-                        <div class="input"><input type="number" name="anciennete" min="0" value="" placeholder="" required></div>
+                        <div class="input"><input type="number" name="anciennete" min="0" placeholder="" required></div>
                         <button>Calculer le tarif</button>
                     </form>
 
                 </div>
 
                 <div>
-                    <img src="images/voitures.jpg" alt="accident de voitures miniatures">
+                    <img src="voitures.jpg" alt="accident de voitures miniatures">
                 </div>
 
             </div>
