@@ -1,62 +1,15 @@
 <?php
 
+    require "functions.php";
+
 	if (isset($_POST['age'])) {
-		/*
-			
-			Une ancienneté de plus de 5 ans augmente le palier d'un niveau, si le conducteur n'est pas déjà refusé
-        */
 
-        // default level
-        $level = 1;
-
-        // level decreased by accident
-		$level -= $_POST['accidents']; 
-
-        // licence driver more than 2 year increase level
-		if ($_POST['permis'] > 2) {
-			$level++;
-		}
-
-        // age more than 25 years old increase level
-		if ($_POST['age'] > 25) {
-			$level++;
-		}
-
-        // level positive and insured more than 5 years increase level
-		if ($level > 0 && $_POST['anciennete'] > 5) {
-			$level++;
-		}
-
-		// first solution to manage negative level
-		if ($level < 0) {
-			$level = 0;
-		}
-
-		if ($level > 4) {
-			$level = 4;
-		}
-
-		// second solution to manage negative level
-
-		$level = max(0, $level);
-
-		$level = min(4, $level);
-
-		// labels for level
-		$colorLevel = [
-			["color" => "Refus d'assurer", "class" => "grey"],
-			["color" => "Rouge", "class" => "red"],
-			["color" => "Orange", "class" => "orange"],
-			["color" => "Vert", "class" => "green"],
-			["color" => "Bleu", "class" => "blue"]
-		];
-
-		// find the good one
-        $theLevel = $colorLevel[$level]['color'];
-        $class = $colorLevel[$level]['class'];
-
+        $level = calculateLevel($_POST['age'], $_POST['permis'], $_POST['accidents'], $_POST['anciennete']);
+        $theLevel = $level['name'];
+		$theClass = $level['class'];
 	}
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -79,7 +32,7 @@
                     <h2>Calcul du tarif de votre client</h2>
 
                     <?php if (isset($theLevel)): ?>
-                        <p>Vous avez droit au tarif <span class="<?=$class?>"><?=$theLevel?></span></p>
+                        <p>Vous avez droit au tarif <span class="<?=$theClass?>"><?=$theLevel?></span></p>
                     <?php endif; ?>
 
                     <form action="index.php" method="post">
@@ -93,6 +46,22 @@
                         <div class="input"><input type="number" name="anciennete" min="0" placeholder="" required></div>
                         <button>Calculer le tarif</button>
                     </form>
+
+                    <?php
+                        $priceExample = calculateLevel(28, 3, 2, 6);
+                        $nameExample = $priceExample['name'];
+                        $classExample = $priceExample['class'];
+				    ?>
+				    <p>
+                        Par exemple, un conducteur ayant :
+                        <ul>
+                            <li>28 ans</li>
+                            <li>3 ans de permis</li>
+                            <li>2 accidents responsables</li>
+                            <li>6 ans d'ancienneté chez nous</li>
+                        </ul>
+					    bénéficiera du tarif <span class="<?=$classExample?>"><?=$nameExample?></span>
+				    </p>
 
                 </div>
 
